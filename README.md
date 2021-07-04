@@ -32,7 +32,7 @@ In Postman add these under header section to accept json value, (Do this for all
     Key : Accept
     value : application/json
 
-In Postman under the Authorization select the type as **Bearer Token** and in right hand side of it next to **token** text box add the token which you get after registration or login , This token hast to be used for all the api's calls which require authentication (loanApply, repayLoan, logout).
+In Postman under the Authorization select the type as **Bearer Token** and in right hand side, next to **token** text box add the token which you get in the json response after successfull registration or login , This token hast to be used for all the api calls which require authentication (loanApply, repayLoan, logout).
 
 
 - **Registration**
