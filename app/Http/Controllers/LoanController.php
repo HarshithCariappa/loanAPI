@@ -19,7 +19,7 @@ class LoanController extends Controller
      * @param $weeklyRepayAmount
      * @return Loans
      */
-    private function store($fields, $interestRate, $totalRepayAmount, $weeklyRepayAmount)
+    public function store($fields, $interestRate, $totalRepayAmount, $weeklyRepayAmount)
     {
         $objLoans = new Loans();
         $objLoans->uid = auth()->user()->uid;
@@ -44,17 +44,6 @@ class LoanController extends Controller
         $objLoan = Loans::find($loanId);
         $objLoan->loan_balance = (float)$loanBalance;
         $objLoan->save();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    private function destroy($id)
-    {
-        //
     }
 
     /**

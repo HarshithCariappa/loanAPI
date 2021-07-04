@@ -2,11 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\AuthController;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -83,8 +79,6 @@ class AuthControllerTest extends TestCase
 
     public function test_logout()
     {
-//        $this->withoutExceptionHandling();
-
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
@@ -102,21 +96,6 @@ class AuthControllerTest extends TestCase
             'HTTP_AUTHORIZATION' => "Bearer $token"
         ])
             ->assertStatus(200);
-    }
-
-    /**
-     * Method to return valid registration data
-     * @return string[]
-     */
-    public function validRegistrationData()
-    {
-        return [
-            'firstName' => 'Harshith',
-            'lastName' => 'Cariappa',
-            'password' => 'password',
-            'phoneNumber' => '9945564586',
-            'password_confirmation' => 'password'
-        ];
     }
 
     /**
@@ -211,18 +190,6 @@ class AuthControllerTest extends TestCase
         ];
 
         return array($formData, $expectedOutput);
-    }
-
-    /**
-     * Method to return valid login data
-     * @return string[]
-     */
-    public function validLoginData()
-    {
-        return [
-            'phoneNumber' => '9945564586',
-            'password' => 'password'
-        ];
     }
 
     /**
