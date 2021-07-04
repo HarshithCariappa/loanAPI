@@ -1,62 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><h1>Simple Loan API</h1></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Loan API
 
-## About Laravel
+It is a simple API built with Laravel 8 framework for demo purpose. It contains features such as:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Authentication using Sanctum with the bearer token.
+- Login and Registration api.
+- API to apply for loan and repay the loan. 
+- Used sqlite to make the setup easy.
+- Unit testing is done using phpUnit with code coverage.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+   - Clone / download the project.
+   - Create a "database.sqlite" file within the "loanAPI\database" folder. 
+   - Create a "testdatabase.sqlite" file withing the "loanAPI\tests" folder.
+   - Open terminal and navigate to the "loansAPI" folder (project home) and Run the below commands in the terminal.
+        
+            php artisan migrate
+            php artisan db:seed
+            php artisan serve
+   - Now the application is running.
+   - The details of how to authenticate and call the api's are give below in *Project Details* section.
 
-## Learning Laravel
+## Project Details 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Using Postman**  
+In Postman add these under header section to accept json value, (Do this for all API calls)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    Key : Accept
+    value : application/json
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- **Registration**
+  - End Point : `/api/register`
+  - Request Type : `POST`
+  - Body Section (Pass the below parameters in the body section of Postman) : 
+        
+        firstName             | Required | String
+        lastName              | Required | String
+        password              | Required | String 
+        password_confirmation | Required | String
+        phoneNumber           | Required | Numeric | Should be 10 digits  | Should be unique
+  
+  - Responses : 
+  
+        Status code  | Responce                    | Reason
+            422      | The given data was invalid  | Data validation failed, check the responce message 
+            201      | Successfull                 | Registration was successfull
 
-### Premium Partners
+- **Login**
+  - End Point : `/api/login`
+  - Request Type : `POST`
+  - Body Section (Pass the below parameters in the body section of Postman) :  
+        
+        phoneNumber | Required 
+        password    | Required 
+        
+  - Responses : 
+  
+        Status code  | Responce                    | Reason
+            401      | Bad Credentials             | Login failed, incorrect userName or password
+            200      | Successful                     | Login was successfull
+            422      | The given data was invalid  | Missing a required parameter
+            
+  - Successful json response : 
+        
+        {
+            "user": {
+                "uid": 1,
+                "first_name": "Harshith",
+                "last_name": "Cariappa",
+                "phone_number": "9945564586",
+                "created_at": "2021-07-04T09:59:20.000000Z",
+                "updated_at": "2021-07-04T09:59:20.000000Z"
+            },
+            "token": "8|wVzaqd72BX6cZ8SA7OhOGuuLqlzCCLyPbIYAcTle"
+        }
+        
+- **Apply for a loan**                   
+    - End Point : `/api/applyLoan`
+    - Request Type : `POST`
+    - Body Section (Pass the below parameters in the body section of Postman) :  
+        
+            loanAmount    | Required  | numeric
+            loanTerm      | Required  | numeric 
+            monthlyIncome | Required  | numeric
+            loanType      | Required  | numeric (all avalilable loan types are given below, this field take the 'loan_type_id' from below table)
+        
+    - **Available loan types** 
+            
+            loan_type_id   |  loan_type          |  interest_rate 
+                1          |  Home Loan          |      0.066
+                2          |  Car Loan           |      0.08
+                3          |  Agriculture Loan   |      0.045
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+    - Responses : 
+    
+            Status code  | Responce                    | Reason
+                403      | Rejected                    | Already have a uncleared loan
+                406      | Rejected                    | On converting Monthly income to weekly income the weekly income insufficient to do weekly repayments
+                401      | Unauthenticated             | Authentication failed, incorrect token passed
+                200      | Approved                    | Loan request is approved
+                422      | The given data was invalid  | Missing a required parameter
+                
+   - Approved Response json : 
+            
+            {
+                "status": "Approved",
+                "message": "Your loan request is approved",
+                "loanId": 4,
+                "totalRepayAmount": 1066,
+                "weeklyRepaymentAmount": 106.6
+            }
 
-## Contributing
+- **Repay a loan**                   
+    - End Point : `/api/RepayLoan`
+    - Request Type : `POST`
+    - Body Section (Pass the below parameters in the body section of Postman) :  
+        
+            repayAmount    | Required  | numeric
+   
+   - **Note : repayAmount should be same as the weeklyRepaymentAmount given by applyLoan API's Approved response**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    - Responses : 
+    
+            Status code  | Responce                    | Reason
+                403      | Failed                      | No existing loan
+                406      | Failed                      | Incorrect weekly repayment amount (Should be same as weeklyRepaymentAmount provided in response)
+                401      | Unauthenticated             | Authentication failed, incorrect token passed
+                200      | Successful                  | Weekly repayment was successful
+                422      | The given data was invalid  | Missing a required parameter
+                
+   - Approved Response json : 
+            
+            {
+                "status": "Successful",
+                "message": "Loan repayment successful",
+                "loanRepayId": 32,
+                "balanceAmount": 852.8
+            }
 
-## Code of Conduct
+## To Be Done
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Logging has to be added.
+- Exception handling has to be done.
+- Script to install the app in one go has to be done.
+- Improving the documentation and adding all the responses.
+- Few more test cases for the unit testing can be added.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Completed Tasks
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Completed all the functionalities of the API
+- Created the Authentication using Sanctum
+- Written 7 test cases with 50 assertions.
+- Did the unit testing for all the api's with overall **92.41%** of code coverage and **100%** code coverage of all manually written code.

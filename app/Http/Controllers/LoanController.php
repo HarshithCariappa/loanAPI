@@ -80,7 +80,7 @@ class LoanController extends Controller
             return response([
                 'status' => 'Rejected',
                 'message' => 'Monthly income is insufficient for weekly repayments',
-            ], 403);
+            ], 406);
         }
 
         $objUserLoan = self::store($fields, $interestRate, $totalRepayAmount, $weeklyRepayAmount);
@@ -91,7 +91,7 @@ class LoanController extends Controller
             'loanId' => $objUserLoan->loan_id,
             'totalRepayAmount' => $totalRepayAmount,
             'weeklyRepaymentAmount' => $weeklyRepayAmount,
-        ], 401);
+        ], 200);
     }
 
     /**

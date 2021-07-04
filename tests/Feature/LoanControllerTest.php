@@ -24,7 +24,7 @@ class LoanControllerTest extends TestCase
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         // valid data test
         $formData = $this->validLoginData();
@@ -75,14 +75,14 @@ class LoanControllerTest extends TestCase
         $this->json('POST','/api/loanApply', $formData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
-            ->assertStatus(403)
+            ->assertStatus(406)
             ->assertJson($expectedOutput);
 
         // valid data test
         $this->json('POST','/api/loanApply', $validLoanApplyData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
-            ->assertStatus(401)
+            ->assertStatus(200)
             ->assertJson($validLoanApplyOutput);
 
         // non unique data (existing loan test)

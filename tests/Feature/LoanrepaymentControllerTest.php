@@ -22,7 +22,7 @@ class LoanrepaymentControllerTest extends TestCase
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         // valid data test
         $formData = $this->validLoginData();
@@ -65,7 +65,7 @@ class LoanrepaymentControllerTest extends TestCase
         $this->json('POST','/api/loanApply', $formData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
-            ->assertStatus(401)
+            ->assertStatus(200)
             ->assertJson($expectedOutput);
 
         // invalid data test , missing required field
@@ -89,14 +89,14 @@ class LoanrepaymentControllerTest extends TestCase
         $this->json('POST','/api/loanRepay', $formData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
-            ->assertStatus(403)
+            ->assertStatus(406)
             ->assertJson($expectedOutput);
 
         // valid data test
         $this->json('POST','/api/loanRepay', $validRepayData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
-            ->assertStatus(401)
+            ->assertStatus(200)
             ->assertJson($validDataOutput);
     }
 

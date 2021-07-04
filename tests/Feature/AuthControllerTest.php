@@ -42,7 +42,7 @@ class AuthControllerTest extends TestCase
         // valid data test
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         // non unique data test
         $expectedOutput = $this->nonUniqueRegistrationOutput();
@@ -63,7 +63,7 @@ class AuthControllerTest extends TestCase
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         // valid data test
         $formData = $this->validLoginData();
@@ -90,7 +90,7 @@ class AuthControllerTest extends TestCase
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
-            ->assertStatus(201);
+            ->assertStatus(200);
 
         // valid data test
         $formData = $this->validLoginData();

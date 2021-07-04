@@ -59,32 +59,23 @@ class LoanRepaymentController extends Controller
         // process the loan repayment
         $repaymentBalance = $this->checkRepaymentConditions((float)$fields['repayAmount'], $objLoan);
 
-        if($repaymentBalance == false)
+        if($repaymentBalance === false)
         {
             return response([
                 'status' => 'Failed',
                 'message' => 'Incorrect weekly repayment amount',
                 'weeklyRepayAmount' => $objLoan->weekly_repayment_amount
-            ], 403);
+            ], 406);
         }
 
         $objLoanRepaymentTracking = self::store($objLoan->loan_id, (float)$fields['repayAmount'], (float)$repaymentBalance);
 
-        if($objLoanRepaymentTracking)
-        {
-            return response([
-                'status' => 'Successful',
-                'message' => 'Loan repayment successful',
-                'loanRepayId' => $objLoanRepaymentTracking->loan_repay_id,
-                'balanceAmount' => $repaymentBalance,
-            ], 401);
-        }
-
         return response([
-            'status' => 'Failed',
-            'message' => 'Repayment failed please try again later',
-            'weeklyRepayAmount' => $objLoan->weekly_repayment_amount
-        ], 403);
+            'status' => 'Successful',
+            'message' => 'Loan repayment successful',
+            'loanRepayId' => $objLoanRepaymentTracking->loan_repay_id,
+            'balanceAmount' => $repaymentBalance,
+        ], 200);
     }
 
     /**
