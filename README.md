@@ -17,6 +17,7 @@ It is a simple API built with Laravel 8 framework for demo purpose. It contains 
    - Create a "testdatabase.sqlite" file withing the "loanAPI\tests" folder.
    - Open terminal and navigate to the "loansAPI" folder (project home) and Run the below commands in the terminal.
         
+            composer install
             php artisan migrate
             php artisan db:seed
             php artisan serve
@@ -140,6 +141,14 @@ In Postman add these under header section to accept json value, (Do this for all
                 "loanRepayId": 32,
                 "balanceAmount": 852.8
             }
+            
+- **Running the unit test**
+    - Open the terminal and navigate to the home folder of the project (loansAPI) and run the below command.
+    
+            .\vendor\bin\phpunit.bat
+            
+    - To check Code coverage report open the **loansAPI\reports\index.html** file in the browser.
+             
 
 ## To Be Done
 
