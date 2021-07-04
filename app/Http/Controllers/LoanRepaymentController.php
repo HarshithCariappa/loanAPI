@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loans;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use App\Models\LoansRepaymentTracking;
+use Illuminate\Http\Response;
+
 class LoanRepaymentController extends Controller
 {
     /**
@@ -28,6 +32,11 @@ class LoanRepaymentController extends Controller
         return $objLoansRepaymentTracking;
     }
 
+    /**
+     * Method to process loan repayment
+     * @param Request $request
+     * @return Application|ResponseFactory|Response
+     */
     public function processLoanRepayment(Request $request)
     {
         // validate fields

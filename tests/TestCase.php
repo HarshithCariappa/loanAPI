@@ -34,4 +34,15 @@ abstract class TestCase extends BaseTestCase
             'password' => 'password'
         ];
     }
+
+    /**
+     * Method to return unauthenticated Output
+     * @return string[]
+     */
+    public function unauthenticatedOutput()
+    {
+        return [
+            'message' => 'Unauthenticated.'
+        ];
+    }
 }

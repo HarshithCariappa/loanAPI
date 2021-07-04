@@ -24,14 +24,4 @@ class Loans extends Model
         'monthly_income',
         'loan_balance',
     ];
-
-    /**
-     * @param $uid
-     * @param $loanBalance
-     * @return mixed
-     */
-    public function fetchByUidAndLoanBalance($uid, $loanBalance)
-    {
-        return Loans::where('uid', $uid)->and('loan_balance', '=>', $loanBalance);
-    }
 }

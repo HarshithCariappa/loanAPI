@@ -33,6 +33,7 @@ class LoanControllerTest extends TestCase
 
         $this->token = $response->json('token');
     }
+
     /**
      * case to test loan apply api
      *
@@ -41,11 +42,19 @@ class LoanControllerTest extends TestCase
      * test invalid data type
      * test valid data
      * test non unique data (existing loan test)
+     * test unauthenticated
      * @return void
      */
-    public function test_loanApply()
+    public function test_loan_apply()
     {
-        // invalid data test , missing required field "secondName"
+        // unauthenticated test
+        list($validLoanApplyData, $validLoanApplyOutput) = $this->validLoanApplyData();
+        $expectedOutput = $this->unauthenticatedOutput();
+        $this->json('POST','/api/loanApply', $validLoanApplyData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
+            ->assertStatus(401)
+            ->assertJson($expectedOutput);
+
+        // invalid data test , missing required field
         list($formData, $expectedOutput) = $this->missingFieldLoanApplyData();
         $this->json('POST','/api/loanApply', $formData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
@@ -53,7 +62,7 @@ class LoanControllerTest extends TestCase
             ->assertStatus(422)
             ->assertJson($expectedOutput);
 
-        // invalid data test , invalid data type "secondName"
+        // invalid data test , invalid data type
         list($formData, $expectedOutput) = $this->invalidDataTypeLoanApplyData();
         $this->json('POST','/api/loanApply', $formData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
@@ -70,16 +79,15 @@ class LoanControllerTest extends TestCase
             ->assertJson($expectedOutput);
 
         // valid data test
-        list($formData, $expectedOutput) = $this->validLoanApplyData();
-        $this->json('POST','/api/loanApply', $formData, [
+        $this->json('POST','/api/loanApply', $validLoanApplyData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
             ->assertStatus(401)
-            ->assertJson($expectedOutput);
+            ->assertJson($validLoanApplyOutput);
 
         // non unique data (existing loan test)
         $expectedOutput = $this->nonUniqueLoanApplyDataOutput();
-        $this->json('POST','/api/loanApply', $formData, [
+        $this->json('POST','/api/loanApply', $validLoanApplyData, [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => "Bearer $this->token"])
             ->assertStatus(403)

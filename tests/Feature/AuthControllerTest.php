@@ -77,8 +77,16 @@ class AuthControllerTest extends TestCase
             ->assertJson($expectedOutput);
     }
 
+    /**
+     * Method  to test logout
+     */
     public function test_logout()
     {
+        $expectedOutput = $this->unauthenticatedOutput();
+        $this->json('POST','/api/logout', [], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
+            ->assertStatus(401)
+            ->assertJson($expectedOutput);
+
         // register a user before login
         $formData = $this->validRegistrationData();
         $this->json('POST','/api/register',$formData, ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'])
