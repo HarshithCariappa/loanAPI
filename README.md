@@ -48,7 +48,7 @@ In Postman add these under header section to accept json value, (Do this for all
   
         Status code  | Responce                    | Reason
             422      | The given data was invalid  | Data validation failed, check the responce message 
-            201      | Successfull                 | Registration was successfull
+            200      | Successfull                 | Registration was successfull
 
 - **Login**
   - End Point : `/api/login`
